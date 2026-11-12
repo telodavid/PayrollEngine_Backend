@@ -1,0 +1,184 @@
+{
+  "ruleCode": "FIZ_NEMFIZ_TAV",
+  "name": "Fizetett \u00E9s nem fizetett t\u00E1voll\u00E9tek",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "PaidAbsenceHours",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "calendarEntries",
+          "inputs": {}
+        },
+        "itemVariable": "CalendarEntry",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "equal",
+                "inputs": {
+                  "left": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "PAYROLL_RUN.CalendarEntries.TypeCode"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "text",
+                      "value": "1000-FIZSZAB"
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "PaidAbsenceHours",
+                    "value": {
+                      "code": "add",
+                      "inputs": {
+                        "left": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "PaidAbsenceHours"
+                          }
+                        },
+                        "right": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "PAYROLL_RUN.CalendarEntries.EventHours"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "2002-FIZTAV",
+        "amount": {
+          "code": "variableReference",
+          "inputs": {
+            "name": "PaidAbsenceHours"
+          }
+        }
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "UnpaidAbsenceHours",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "calendarEntries",
+          "inputs": {}
+        },
+        "itemVariable": "CalendarEntry",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "equal",
+                "inputs": {
+                  "left": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "PAYROLL_RUN.CalendarEntries.IsPaid"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "boolean",
+                      "value": false
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "UnpaidAbsenceHours",
+                    "value": {
+                      "code": "add",
+                      "inputs": {
+                        "left": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "UnpaidAbsenceHours"
+                          }
+                        },
+                        "right": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "PAYROLL_RUN.CalendarEntries.EventHours"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "2003-NFIZTAV",
+        "amount": {
+          "code": "variableReference",
+          "inputs": {
+            "name": "UnpaidAbsenceHours"
+          }
+        }
+      }
+    }
+  ]
+}

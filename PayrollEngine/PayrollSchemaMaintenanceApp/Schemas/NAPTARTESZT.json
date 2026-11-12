@@ -1,0 +1,77 @@
+{
+  "schemaCode": "NAPTARTESZT",
+  "name": "Napt\u00E1r teszt",
+  "version": 1,
+  "isActive": true,
+  "blocks": [
+    {
+      "name": "Blokk 1",
+      "rules": [
+        {
+          "ruleCode": "M_SZERINTI_O",
+          "ruleName": "Munkarend szerinti \u00F3r\u00E1k"
+        },
+        {
+          "ruleCode": "MUNKAREND_SZERINTI_SZUNET",
+          "ruleName": "Munkarend szerinti sz\u00FCnetek"
+        },
+        {
+          "ruleCode": "FIZ_NEMFIZ_TAV",
+          "ruleName": "Fizetett \u00E9s nem fizetett t\u00E1voll\u00E9tek"
+        },
+        {
+          "ruleCode": "KONSTANS",
+          "ruleName": "BTAMO adatbet\u00F6lt\u00E9s teszt"
+        },
+        {
+          "ruleCode": "HAVIBERES_JELEN_TAV",
+          "ruleName": "Havib\u00E9res jelenl\u00E9ti \u00E9s t\u00E1voll\u00E9tes b\u00E9re"
+        },
+        {
+          "ruleCode": "ORABERES_JELEN_TAV",
+          "ruleName": "\u00D3rab\u00E9res jelenl\u00E9ti \u00E9s t\u00E1voll\u00E9tes b\u00E9re"
+        },
+        {
+          "ruleCode": "15SZ_POTLEK_22_06",
+          "ruleName": "15 sz\u00E1zal\u00E9kos p\u00F3tl\u00E9k 22:00-06:00 k\u00F6z\u00E9 es\u0151 id\u0151re"
+        },
+        {
+          "ruleCode": "JELENLETI_BONUSZ",
+          "ruleName": "Jelenl\u00E9ti b\u00F3nusz"
+        },
+        {
+          "ruleCode": "BRUTTO_OSSZESITO",
+          "ruleName": "B\u00E9relemek \u00F6sszes\u00EDt\u00E9se a brutt\u00F3ba"
+        },
+        {
+          "ruleCode": "TB_JARULEK",
+          "ruleName": "T\u00E1rsadalom biztos\u00EDt\u00E1si hozz\u00E1j\u00E1rul\u00E1s megk\u00E9pz\u00E9se"
+        },
+        {
+          "ruleCode": "SZOCHO_SZAMITAS",
+          "ruleName": "Szoci\u00E1lis hozz\u00E1j\u00E1rul\u00E1s kisz\u00E1m\u00EDt\u00E1sa"
+        },
+        {
+          "ruleCode": "25A_SZJA_KEDV",
+          "ruleName": "25 \u00E9v alattiak SZJA kedvezm\u00E9nye"
+        },
+        {
+          "ruleCode": "ANYA_ADO_KEDV",
+          "ruleName": "Any\u00E1k ad\u00F3kedvezm\u00E9nye"
+        },
+        {
+          "ruleCode": "SZJA_SZAMITAS",
+          "ruleName": "Szem\u00E9lyi j\u00F6vedelemad\u00F3 kisz\u00E1m\u00EDt\u00E1sa"
+        },
+        {
+          "ruleCode": "NETTO_BER",
+          "ruleName": "Nett\u00F3 b\u00E9r kisz\u00E1m\u00EDt\u00E1sa"
+        },
+        {
+          "ruleCode": "SZEP_KERET",
+          "ruleName": "SZ\u00C9P-k\u00E1rtya \u00E9ves keret\u00E9nek kezel\u00E9se"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "ruleCode": "MUNKAREND_SZERINTI_SZUNET",
+  "name": "Munkarend szerinti sz\u00FCnetek",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "2000-MRENDO",
+        "amount": {
+          "code": "sum",
+          "inputs": {
+            "items": {
+              "code": "workCalendar",
+              "inputs": {}
+            },
+            "value": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "PAYROLL_RUN.WorkCalendar.ScheduledHours"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,363 @@
+{
+  "ruleCode": "25A_SZJA_KEDV",
+  "name": "25 év alattiak SZJA kedvezménye",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "DolgozoEletkora",
+        "value": {
+          "code": "completedYears",
+          "inputs": {
+            "start": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "dbo.Employee.BirthDate"
+              }
+            },
+            "end": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "PAYROLL_RUN.PeriodEnd"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "U25Kedvezmeny",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "lessThan",
+          "inputs": {
+            "left": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "DolgozoEletkora"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "decimal",
+                "value": 25
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "U25Atlagkereset",
+              "value": {
+                "code": "constant",
+                "inputs": {
+                  "valueType": "decimal",
+                  "value": 0
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "U25SzjaArany",
+              "value": {
+                "code": "constant",
+                "inputs": {
+                  "valueType": "decimal",
+                  "value": 0
+                }
+              }
+            }
+          },
+          {
+            "code": "forEach",
+            "inputs": {
+              "items": {
+                "code": "dataReference",
+                "inputs": {
+                  "reference": "payrollRun.constants"
+                }
+              },
+              "itemVariable": "U25AktualisKonstans",
+              "steps": [
+                {
+                  "code": "if",
+                  "inputs": {
+                    "condition": {
+                      "code": "and",
+                      "inputs": {
+                        "conditions": [
+                          {
+                            "code": "lessThanOrEqual",
+                            "inputs": {
+                              "left": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "dbo.Constant.ValidFrom"
+                                }
+                              },
+                              "right": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.Period"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "code": "or",
+                            "inputs": {
+                              "conditions": [
+                                {
+                                  "code": "isNull",
+                                  "inputs": {
+                                    "value": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "dbo.Constant.ValidTo"
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "code": "greaterThanOrEqual",
+                                  "inputs": {
+                                    "left": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "dbo.Constant.ValidTo"
+                                      }
+                                    },
+                                    "right": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "PAYROLL_RUN.Period"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "thenSteps": [
+                      {
+                        "code": "switch",
+                        "inputs": {
+                          "value": {
+                            "code": "dataReference",
+                            "inputs": {
+                              "reference": "dbo.Constant.ConstantId"
+                            }
+                          },
+                          "cases": [
+                            {
+                              "value": {
+                                "code": "constant",
+                                "inputs": {
+                                  "valueType": "text",
+                                  "value": "BAKER"
+                                }
+                              },
+                              "steps": [
+                                {
+                                  "code": "setVariable",
+                                  "inputs": {
+                                    "name": "U25Atlagkereset",
+                                    "value": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "dbo.Constant.Value"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "value": {
+                                "code": "constant",
+                                "inputs": {
+                                  "valueType": "text",
+                                  "value": "SZJAS"
+                                }
+                              },
+                              "steps": [
+                                {
+                                  "code": "setVariable",
+                                  "inputs": {
+                                    "name": "U25SzjaArany",
+                                    "value": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "dbo.Constant.Value"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "defaultSteps": []
+                        }
+                      }
+                    ],
+                    "elseSteps": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "U25Brutto",
+              "value": {
+                "code": "calculatedPayrollElementValue",
+                "inputs": {
+                  "payrollElement": "4000-BRUTTÓ"
+                }
+              }
+            }
+          },
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "greaterThan",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "U25Brutto"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "decimal",
+                      "value": 0
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "U25KedvezmenyAlap",
+                    "value": {
+                      "code": "variableReference",
+                      "inputs": {
+                        "name": "U25Brutto"
+                      }
+                    }
+                  }
+                },
+                {
+                  "code": "if",
+                  "inputs": {
+                    "condition": {
+                      "code": "greaterThan",
+                      "inputs": {
+                        "left": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "U25KedvezmenyAlap"
+                          }
+                        },
+                        "right": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "U25Atlagkereset"
+                          }
+                        }
+                      }
+                    },
+                    "thenSteps": [
+                      {
+                        "code": "setVariable",
+                        "inputs": {
+                          "name": "U25KedvezmenyAlap",
+                          "value": {
+                            "code": "variableReference",
+                            "inputs": {
+                              "name": "U25Atlagkereset"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "elseSteps": []
+                  }
+                },
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "U25Kedvezmeny",
+                    "value": {
+                      "code": "multiply",
+                      "inputs": {
+                        "left": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "U25KedvezmenyAlap"
+                          }
+                        },
+                        "right": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "U25SzjaArany"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "5003-ADOKEDV",
+        "amount": {
+          "code": "variableReference",
+          "inputs": {
+            "name": "U25Kedvezmeny"
+          }
+        }
+      }
+    }
+  ]
+}

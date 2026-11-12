@@ -1,0 +1,193 @@
+{
+  "ruleCode": "SZJA_SZAMITAS",
+  "name": "Személyi jövedelemadó kiszámítása",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "SzjaSzazalek",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "dataReference",
+          "inputs": {
+            "reference": "payrollRun.constants"
+          }
+        },
+        "itemVariable": "AktualisKonstans",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "equal",
+                "inputs": {
+                  "left": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "dbo.Constant.ConstantId"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "text",
+                      "value": "SZJAS"
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "SzjaSzazalek",
+                    "value": {
+                      "code": "dataReference",
+                      "inputs": {
+                        "reference": "dbo.Constant.Value"
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "FizetendoSzja",
+        "value": {
+          "code": "multiply",
+          "inputs": {
+            "left": {
+              "code": "calculatedPayrollElementValue",
+              "inputs": {
+                "payrollElement": "4000-BRUTTÓ"
+              }
+            },
+            "right": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "SzjaSzazalek"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "isNotNull",
+          "inputs": {
+            "value": {
+              "code": "calculatedPayrollElementValue",
+              "inputs": {
+                "payrollElement": "5003-ADOKEDV"
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "FizetendoSzja",
+              "value": {
+                "code": "subtract",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "FizetendoSzja"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "5003-ADOKEDV"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    },
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "lessThan",
+          "inputs": {
+            "left": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "FizetendoSzja"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "decimal",
+                "value": 0
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "FizetendoSzja",
+              "value": {
+                "code": "constant",
+                "inputs": {
+                  "valueType": "decimal",
+                  "value": 0
+                }
+              }
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "5000-SZJA",
+        "amount": {
+          "code": "variableReference",
+          "inputs": {
+            "name": "FizetendoSzja"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "ruleCode": "BRUTTO_OSSZESITO",
+  "name": "B\u00E9relemek \u00F6sszes\u00EDt\u00E9se a brutt\u00F3ba",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "BruttoOsszeg",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "payrollElementValues",
+          "inputs": {}
+        },
+        "itemVariable": "PayrollElement",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "equal",
+                "inputs": {
+                  "left": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "PAYROLLELEMENT_KUMULCSOP.PAYROLLELEMENT_4000-BRUTTO"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "boolean",
+                      "value": true
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "BruttoOsszeg",
+                    "value": {
+                      "code": "add",
+                      "inputs": {
+                        "left": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "BruttoOsszeg"
+                          }
+                        },
+                        "right": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "PAYROLL_RUN.PayrollElementValues.Amount"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "4000-BRUTT\u00D3",
+        "amount": {
+          "code": "variableReference",
+          "inputs": {
+            "name": "BruttoOsszeg"
+          }
+        }
+      }
+    }
+  ]
+}

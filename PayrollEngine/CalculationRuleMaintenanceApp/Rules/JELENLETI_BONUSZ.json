@@ -1,0 +1,202 @@
+{
+  "ruleCode": "JELENLETI_BONUSZ",
+  "name": "Jelenl\u00E9ti b\u00F3nusz",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "equal",
+          "inputs": {
+            "left": {
+              "code": "calculatedPayrollElementValue",
+              "inputs": {
+                "payrollElement": "2003-NFIZTAV"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "decimal",
+                "value": 0
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "JelboErtek",
+              "value": {
+                "code": "constant",
+                "inputs": {
+                  "valueType": "decimal",
+                  "value": "0"
+                }
+              }
+            }
+          },
+          {
+            "code": "forEach",
+            "inputs": {
+              "items": {
+                "code": "dataReference",
+                "inputs": {
+                  "reference": "payrollRun.constants"
+                }
+              },
+              "itemVariable": "AktualiKonstans",
+              "steps": [
+                {
+                  "code": "if",
+                  "inputs": {
+                    "condition": {
+                      "code": "equal",
+                      "inputs": {
+                        "left": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "dbo.Constant.ConstantId"
+                          }
+                        },
+                        "right": {
+                          "code": "constant",
+                          "inputs": {
+                            "valueType": "text",
+                            "value": "JELBO"
+                          }
+                        }
+                      }
+                    },
+                    "thenSteps": [
+                      {
+                        "code": "setVariable",
+                        "inputs": {
+                          "name": "JelboErtek",
+                          "value": {
+                            "code": "dataReference",
+                            "inputs": {
+                              "reference": "dbo.Constant.Value"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "elseSteps": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "notEqual",
+                "inputs": {
+                  "left": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "1100-HAVIBER"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "decimal",
+                      "value": 0
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "emitPayrollElement",
+                  "inputs": {
+                    "payrollElement": "3001-JELBON",
+                    "amount": {
+                      "code": "multiply",
+                      "inputs": {
+                        "left": {
+                          "code": "calculatedPayrollElementValue",
+                          "inputs": {
+                            "payrollElement": "1100-HAVIBER"
+                          }
+                        },
+                        "right": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "JelboErtek"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": [
+                {
+                  "code": "if",
+                  "inputs": {
+                    "condition": {
+                      "code": "notEqual",
+                      "inputs": {
+                        "left": {
+                          "code": "calculatedPayrollElementValue",
+                          "inputs": {
+                            "payrollElement": "1101-ORABER"
+                          }
+                        },
+                        "right": {
+                          "code": "constant",
+                          "inputs": {
+                            "valueType": "decimal",
+                            "value": 0
+                          }
+                        }
+                      }
+                    },
+                    "thenSteps": [
+                      {
+                        "code": "emitPayrollElement",
+                        "inputs": {
+                          "payrollElement": "3001-JELBON",
+                          "amount": {
+                            "code": "multiply",
+                            "inputs": {
+                              "left": {
+                                "code": "calculatedPayrollElementValue",
+                                "inputs": {
+                                  "payrollElement": "1101-ORABER"
+                                }
+                              },
+                              "right": {
+                                "code": "variableReference",
+                                "inputs": {
+                                  "name": "JelboErtek"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "elseSteps": []
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    }
+  ]
+}

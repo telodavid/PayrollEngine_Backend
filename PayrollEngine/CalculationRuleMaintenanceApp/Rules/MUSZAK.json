@@ -1,0 +1,87 @@
+{
+  "ruleCode": "MUSZAK",
+  "name": "MUSZAK",
+  "version": 1,
+  "isActive": true,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "Muszakpotlekszazalek",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0.15
+          }
+        }
+      }
+    },
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "contains",
+          "inputs": {
+            "value": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "dbo.WorkSchedule.Name"
+              }
+            },
+            "searchText": "8H_TESZT"
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "Munkakoripotlekosszeg",
+              "value": {
+                "code": "multiply",
+                "inputs": {
+                  "left": {
+                    "code": "payrollElementValue",
+                    "inputs": {
+                      "payrollElement": "1000-HAVIBER"
+                    }
+                  },
+                  "right": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "Muszakpotlekszazalek"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "2000-BRUTTO_OSSZES",
+              "amount": {
+                "code": "add",
+                "inputs": {
+                  "left": {
+                    "code": "payrollElementValue",
+                    "inputs": {
+                      "payrollElement": "1000-HAVIBER"
+                    }
+                  },
+                  "right": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "Munkakoripotlekosszeg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    }
+  ]
+}

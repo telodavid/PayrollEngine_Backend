@@ -1,0 +1,76 @@
+{
+  "reportCode": "UJ_RIPORT",
+  "name": "\u00DAj riport",
+  "version": 1,
+  "isActive": true,
+  "dataSource": "PAYROLL_RESULT",
+  "dateFilter": {
+    "mode": "MONTH_RANGE",
+    "dateField": null,
+    "validFromField": null,
+    "validToField": null
+  },
+  "relations": [],
+  "xmlRootElementName": "Report",
+  "xmlRecordElementName": "Record",
+  "fileNamePattern": "riport_{period}",
+  "fields": [
+    {
+      "code": "employeeId",
+      "displayName": "Dolgoz\u00F3azonos\u00EDt\u00F3",
+      "outputName": "EmployeeId",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.EmployeeId",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    },
+    {
+      "code": "period",
+      "displayName": "Peri\u00F3dus",
+      "outputName": "Period",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.Period",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    },
+    {
+      "code": "element",
+      "displayName": "B\u00E9relemk\u00F3d",
+      "outputName": "PayrollElement",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollElement.Code",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    },
+    {
+      "code": "amount",
+      "displayName": "\u00D6sszeg",
+      "outputName": "Amount",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.Amount",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    }
+  ],
+  "grouping": {
+    "rowMode": "DETAIL",
+    "groupBy": [],
+    "splitFilesBy": [],
+    "sortBy": []
+  },
+  "parameters": [],
+  "filters": [],
+  "output": null
+}

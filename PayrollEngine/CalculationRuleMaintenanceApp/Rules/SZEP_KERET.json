@@ -1,0 +1,473 @@
+{
+  "ruleCode": "SZEP_KERET",
+  "name": "SZÉP-kártya éves keretének kezelése",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "isNotNull",
+          "inputs": {
+            "value": {
+              "code": "payrollElementValue",
+              "inputs": {
+                "payrollElement": "7000-SZEPK"
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "SzepAktualis",
+              "value": {
+                "code": "payrollElementValue",
+                "inputs": {
+                  "payrollElement": "7000-SZEPK"
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "SzepEvesMaximum",
+              "value": {
+                "code": "constant",
+                "inputs": {
+                  "valueType": "decimal",
+                  "value": 0
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "SzepKorabbiNormal",
+              "value": {
+                "code": "constant",
+                "inputs": {
+                  "valueType": "decimal",
+                  "value": 0
+                }
+              }
+            }
+          },
+          {
+            "code": "forEach",
+            "inputs": {
+              "items": {
+                "code": "dataReference",
+                "inputs": {
+                  "reference": "payrollRun.constants"
+                }
+              },
+              "itemVariable": "SzepKonstans",
+              "steps": [
+                {
+                  "code": "if",
+                  "inputs": {
+                    "condition": {
+                      "code": "and",
+                      "inputs": {
+                        "conditions": [
+                          {
+                            "code": "equal",
+                            "inputs": {
+                              "left": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "dbo.Constant.ConstantId"
+                                }
+                              },
+                              "right": {
+                                "code": "constant",
+                                "inputs": {
+                                  "valueType": "text",
+                                  "value": "SZEPM"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "code": "lessThanOrEqual",
+                            "inputs": {
+                              "left": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "dbo.Constant.ValidFrom"
+                                }
+                              },
+                              "right": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.Period"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "code": "or",
+                            "inputs": {
+                              "conditions": [
+                                {
+                                  "code": "isNull",
+                                  "inputs": {
+                                    "value": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "dbo.Constant.ValidTo"
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "code": "greaterThanOrEqual",
+                                  "inputs": {
+                                    "left": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "dbo.Constant.ValidTo"
+                                      }
+                                    },
+                                    "right": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "PAYROLL_RUN.Period"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "thenSteps": [
+                      {
+                        "code": "setVariable",
+                        "inputs": {
+                          "name": "SzepEvesMaximum",
+                          "value": {
+                            "code": "dataReference",
+                            "inputs": {
+                              "reference": "dbo.Constant.Value"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "elseSteps": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "code": "forEach",
+            "inputs": {
+              "items": {
+                "code": "dataReference",
+                "inputs": {
+                  "reference": "PAYROLL_RUN.PreviousResults"
+                }
+              },
+              "itemVariable": "SzepKorabbiEredmeny",
+              "steps": [
+                {
+                  "code": "if",
+                  "inputs": {
+                    "condition": {
+                      "code": "and",
+                      "inputs": {
+                        "conditions": [
+                          {
+                            "code": "equal",
+                            "inputs": {
+                              "left": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.PreviousResults.PayrollElementCode"
+                                }
+                              },
+                              "right": {
+                                "code": "constant",
+                                "inputs": {
+                                  "valueType": "text",
+                                  "value": "7001-SZEPKNORM"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "code": "equal",
+                            "inputs": {
+                              "left": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.PreviousResults.Year"
+                                }
+                              },
+                              "right": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.PeriodYear"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "code": "lessThan",
+                            "inputs": {
+                              "left": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.PreviousResults.Period"
+                                }
+                              },
+                              "right": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.Period"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "code": "or",
+                            "inputs": {
+                              "conditions": [
+                                {
+                                  "code": "equal",
+                                  "inputs": {
+                                    "left": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "PAYROLL_RUN.PreviousResults.ResultType"
+                                      }
+                                    },
+                                    "right": {
+                                      "code": "constant",
+                                      "inputs": {
+                                        "valueType": "text",
+                                        "value": "O"
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "code": "equal",
+                                  "inputs": {
+                                    "left": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "PAYROLL_RUN.PreviousResults.ResultType"
+                                      }
+                                    },
+                                    "right": {
+                                      "code": "constant",
+                                      "inputs": {
+                                        "valueType": "text",
+                                        "value": "A"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "thenSteps": [
+                      {
+                        "code": "setVariable",
+                        "inputs": {
+                          "name": "SzepKorabbiNormal",
+                          "value": {
+                            "code": "add",
+                            "inputs": {
+                              "left": {
+                                "code": "variableReference",
+                                "inputs": {
+                                  "name": "SzepKorabbiNormal"
+                                }
+                              },
+                              "right": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.PreviousResults.Amount"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "elseSteps": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "SzepMaradekKeret",
+              "value": {
+                "code": "subtract",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "SzepEvesMaximum"
+                    }
+                  },
+                  "right": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "SzepKorabbiNormal"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "lessThan",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "SzepMaradekKeret"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "decimal",
+                      "value": 0
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "SzepMaradekKeret",
+                    "value": {
+                      "code": "constant",
+                      "inputs": {
+                        "valueType": "decimal",
+                        "value": 0
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "SzepNormal",
+              "value": {
+                "code": "variableReference",
+                "inputs": {
+                  "name": "SzepAktualis"
+                }
+              }
+            }
+          },
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "greaterThan",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "SzepNormal"
+                    }
+                  },
+                  "right": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "SzepMaradekKeret"
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "SzepNormal",
+                    "value": {
+                      "code": "variableReference",
+                      "inputs": {
+                        "name": "SzepMaradekKeret"
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "7001-SZEPKNORM",
+              "amount": {
+                "code": "variableReference",
+                "inputs": {
+                  "name": "SzepNormal"
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "7002-SZEPKADÓ",
+              "amount": {
+                "code": "subtract",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "SzepAktualis"
+                    }
+                  },
+                  "right": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "SzepNormal"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    }
+  ]
+}

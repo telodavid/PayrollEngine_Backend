@@ -1,0 +1,7 @@
+# SQL Server connection settings for the demo
+ServerName=LAPTOP\RPA2
+DatabaseName=PY_2
+Authentication=Windows
+Encrypt=True
+TrustServerCertificate=True
+ConnectionTimeoutSeconds=5

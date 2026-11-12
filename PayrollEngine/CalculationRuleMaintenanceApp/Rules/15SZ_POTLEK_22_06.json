@@ -1,0 +1,234 @@
+{
+  "ruleCode": "15SZ_POTLEK_22_06",
+  "name": "15 sz\u00E1zal\u00E9kos p\u00F3tl\u00E9k 22:00-06:00 k\u00F6z\u00E9 es\u0151 id\u0151re",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "EjszakaiOrak",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": "0"
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "workCalendar",
+          "inputs": {}
+        },
+        "itemVariable": "MunkarendiNap",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "greaterThan",
+                "inputs": {
+                  "left": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "PAYROLL_RUN.WorkCalendar.ScheduledHours"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "decimal",
+                      "value": "0"
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "EjszakaiOrak",
+                    "value": {
+                      "code": "add",
+                      "inputs": {
+                        "left": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "EjszakaiOrak"
+                          }
+                        },
+                        "right": {
+                          "code": "overlapHours",
+                          "inputs": {
+                            "start": {
+                              "code": "dataReference",
+                              "inputs": {
+                                "reference": "PAYROLL_RUN.WorkCalendar.StartTime"
+                              }
+                            },
+                            "end": {
+                              "code": "dataReference",
+                              "inputs": {
+                                "reference": "PAYROLL_RUN.WorkCalendar.EndTime"
+                              }
+                            },
+                            "windowStart": {
+                              "code": "constant",
+                              "inputs": {
+                                "valueType": "time",
+                                "value": "22:00:00"
+                              }
+                            },
+                            "windowEnd": {
+                              "code": "constant",
+                              "inputs": {
+                                "valueType": "time",
+                                "value": "06:00:00"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "2007-MPEJH",
+        "amount": {
+          "code": "variableReference",
+          "inputs": {
+            "name": "EjszakaiOrak"
+          }
+        }
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "EjszakaiPotlekArany",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": "0"
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "dataReference",
+          "inputs": {
+            "reference": "payrollRun.constants"
+          }
+        },
+        "itemVariable": "AktualisKonstans",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "equal",
+                "inputs": {
+                  "left": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "dbo.Constant.ConstantId"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "text",
+                      "value": "15SZP"
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "EjszakaiPotlekArany",
+                    "value": {
+                      "code": "dataReference",
+                      "inputs": {
+                        "reference": "dbo.Constant.Value"
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "EjszakaiPotlegSeged",
+        "value": {
+          "code": "multiply",
+          "inputs": {
+            "left": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "EjszakaiOrak"
+              }
+            },
+            "right": {
+              "code": "calculatedPayrollElementValue",
+              "inputs": {
+                "payrollElement": "1200-EGYORA"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "2006-MPEJO",
+        "amount": {
+          "code": "multiply",
+          "inputs": {
+            "left": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "EjszakaiPotlegSeged"
+              }
+            },
+            "right": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "EjszakaiPotlekArany"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

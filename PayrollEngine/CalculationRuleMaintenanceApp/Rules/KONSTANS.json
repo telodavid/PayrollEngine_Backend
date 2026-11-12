@@ -1,0 +1,411 @@
+{
+  "ruleCode": "KONSTANS",
+  "name": "BTAMO adatbet\u00f6lt\u00e9s teszt",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "BTAMOValue",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "dataReference",
+          "inputs": {
+            "reference": "payrollRun.constants"
+          }
+        },
+        "itemVariable": "CurrentConstant",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "and",
+                "inputs": {
+                  "conditions": [
+                    {
+                      "code": "equal",
+                      "inputs": {
+                        "left": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "dbo.Constant.ConstantId"
+                          }
+                        },
+                        "right": {
+                          "code": "constant",
+                          "inputs": {
+                            "valueType": "text",
+                            "value": "BTAMO"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "code": "lessThanOrEqual",
+                      "inputs": {
+                        "left": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "dbo.Constant.ValidFrom"
+                          }
+                        },
+                        "right": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "PAYROLL_RUN.Period"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "code": "or",
+                      "inputs": {
+                        "conditions": [
+                          {
+                            "code": "isNull",
+                            "inputs": {
+                              "value": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "dbo.Constant.ValidTo"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "code": "greaterThanOrEqual",
+                            "inputs": {
+                              "left": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "dbo.Constant.ValidTo"
+                                }
+                              },
+                              "right": {
+                                "code": "dataReference",
+                                "inputs": {
+                                  "reference": "PAYROLL_RUN.Period"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "BTAMOValue",
+                    "value": {
+                      "code": "dataReference",
+                      "inputs": {
+                        "reference": "dbo.Constant.Value"
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "UtazasiNapok",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "UtolsoSzamoltDatum",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "date",
+            "value": "1900-01-01"
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "calendarEntries",
+          "inputs": {}
+        },
+        "itemVariable": "CalendarEntry",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "and",
+                "inputs": {
+                  "conditions": [
+                    {
+                      "code": "greaterThan",
+                      "inputs": {
+                        "left": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "PAYROLL_RUN.CalendarEntries.ScheduledHours"
+                          }
+                        },
+                        "right": {
+                          "code": "constant",
+                          "inputs": {
+                            "valueType": "decimal",
+                            "value": 0
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "code": "notEqual",
+                      "inputs": {
+                        "left": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "PAYROLL_RUN.CalendarEntries.Date"
+                          }
+                        },
+                        "right": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "UtolsoSzamoltDatum"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "if",
+                  "inputs": {
+                    "condition": {
+                      "code": "isNull",
+                      "inputs": {
+                        "value": {
+                          "code": "dataReference",
+                          "inputs": {
+                            "reference": "PAYROLL_RUN.CalendarEntries.TypeCode"
+                          }
+                        }
+                      }
+                    },
+                    "thenSteps": [
+                      {
+                        "code": "setVariable",
+                        "inputs": {
+                          "name": "UtazasiNapok",
+                          "value": {
+                            "code": "add",
+                            "inputs": {
+                              "left": {
+                                "code": "variableReference",
+                                "inputs": {
+                                  "name": "UtazasiNapok"
+                                }
+                              },
+                              "right": {
+                                "code": "constant",
+                                "inputs": {
+                                  "valueType": "decimal",
+                                  "value": 1
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "code": "setVariable",
+                        "inputs": {
+                          "name": "UtolsoSzamoltDatum",
+                          "value": {
+                            "code": "dataReference",
+                            "inputs": {
+                              "reference": "PAYROLL_RUN.CalendarEntries.Date"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "elseSteps": [
+                      {
+                        "code": "switch",
+                        "inputs": {
+                          "value": {
+                            "code": "dataReference",
+                            "inputs": {
+                              "reference": "PAYROLL_RUN.CalendarEntries.TypeCode"
+                            }
+                          },
+                          "cases": [
+                            {
+                              "value": {
+                                "code": "constant",
+                                "inputs": {
+                                  "valueType": "text",
+                                  "value": "2000-TULO"
+                                }
+                              },
+                              "steps": [
+                                {
+                                  "code": "setVariable",
+                                  "inputs": {
+                                    "name": "UtazasiNapok",
+                                    "value": {
+                                      "code": "add",
+                                      "inputs": {
+                                        "left": {
+                                          "code": "variableReference",
+                                          "inputs": {
+                                            "name": "UtazasiNapok"
+                                          }
+                                        },
+                                        "right": {
+                                          "code": "constant",
+                                          "inputs": {
+                                            "valueType": "decimal",
+                                            "value": 1
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "code": "setVariable",
+                                  "inputs": {
+                                    "name": "UtolsoSzamoltDatum",
+                                    "value": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "PAYROLL_RUN.CalendarEntries.Date"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "defaultSteps": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "TAVOLKm",
+        "value": {
+          "code": "dataReference",
+          "inputs": {
+            "reference": "KIEGALAPADAT.TAVOL"
+          }
+        }
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "BTAMO_TAVOL_EREDMENY",
+        "value": {
+          "code": "multiply",
+          "inputs": {
+            "left": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "TAVOLKm"
+              }
+            },
+            "right": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "BTAMOValue"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "UtazasiOsszeg",
+        "value": {
+          "code": "multiply",
+          "inputs": {
+            "left": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "UtazasiNapok"
+              }
+            },
+            "right": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "BTAMO_TAVOL_EREDMENY"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "3000-MJTAM",
+        "amount": {
+          "code": "variableReference",
+          "inputs": {
+            "name": "UtazasiOsszeg"
+          }
+        }
+      }
+    }
+  ]
+}

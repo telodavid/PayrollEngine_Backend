@@ -1,0 +1,25 @@
+{
+  "ruleCode": "TAMO_BETOLTES_TESZT",
+  "name": "BTAMO adatbet\u00F6lt\u00E9s teszt",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "alma",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "text",
+            "value": "0"
+          }
+        }
+      }
+    }
+  ]
+}

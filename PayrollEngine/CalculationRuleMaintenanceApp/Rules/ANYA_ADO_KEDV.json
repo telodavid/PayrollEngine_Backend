@@ -1,0 +1,256 @@
+{
+  "ruleCode": "ANYA_ADO_KEDV",
+  "name": "Anyák adókedvezménye",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "GyerekSzam",
+        "value": {
+          "code": "count",
+          "inputs": {
+            "items": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "employee.dependents"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "equal",
+          "inputs": {
+            "left": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "KIEGALAPADAT.NEM"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "option",
+                "value": "NO"
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "AnyaEletkora",
+              "value": {
+                "code": "completedYears",
+                "inputs": {
+                  "start": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "dbo.Employee.BirthDate"
+                    }
+                  },
+                  "end": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "PAYROLL_RUN.PeriodEnd"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "greaterThan",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "AnyaEletkora"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "decimal",
+                      "value": 40
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "if",
+                  "inputs": {
+                    "condition": {
+                      "code": "greaterThanOrEqual",
+                      "inputs": {
+                        "left": {
+                          "code": "variableReference",
+                          "inputs": {
+                            "name": "GyerekSzam"
+                          }
+                        },
+                        "right": {
+                          "code": "constant",
+                          "inputs": {
+                            "valueType": "decimal",
+                            "value": 4
+                          }
+                        }
+                      }
+                    },
+                    "thenSteps": [
+                      {
+                        "code": "setVariable",
+                        "inputs": {
+                          "name": "AnyaSzjaArany",
+                          "value": {
+                            "code": "constant",
+                            "inputs": {
+                              "valueType": "decimal",
+                              "value": 0
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "code": "forEach",
+                        "inputs": {
+                          "items": {
+                            "code": "dataReference",
+                            "inputs": {
+                              "reference": "payrollRun.constants"
+                            }
+                          },
+                          "itemVariable": "AnyaAktualisKonstans",
+                          "steps": [
+                            {
+                              "code": "if",
+                              "inputs": {
+                                "condition": {
+                                  "code": "equal",
+                                  "inputs": {
+                                    "left": {
+                                      "code": "dataReference",
+                                      "inputs": {
+                                        "reference": "dbo.Constant.ConstantId"
+                                      }
+                                    },
+                                    "right": {
+                                      "code": "constant",
+                                      "inputs": {
+                                        "valueType": "text",
+                                        "value": "SZJAS"
+                                      }
+                                    }
+                                  }
+                                },
+                                "thenSteps": [
+                                  {
+                                    "code": "setVariable",
+                                    "inputs": {
+                                      "name": "AnyaSzjaArany",
+                                      "value": {
+                                        "code": "dataReference",
+                                        "inputs": {
+                                          "reference": "dbo.Constant.Value"
+                                        }
+                                      }
+                                    }
+                                  }
+                                ],
+                                "elseSteps": []
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "code": "setVariable",
+                        "inputs": {
+                          "name": "AnyaAdokedvezmeny",
+                          "value": {
+                            "code": "multiply",
+                            "inputs": {
+                              "left": {
+                                "code": "calculatedPayrollElementValue",
+                                "inputs": {
+                                  "payrollElement": "4000-BRUTTÓ"
+                                }
+                              },
+                              "right": {
+                                "code": "variableReference",
+                                "inputs": {
+                                  "name": "AnyaSzjaArany"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "code": "if",
+                        "inputs": {
+                          "condition": {
+                            "code": "greaterThan",
+                            "inputs": {
+                              "left": {
+                                "code": "variableReference",
+                                "inputs": {
+                                  "name": "AnyaAdokedvezmeny"
+                                }
+                              },
+                              "right": {
+                                "code": "constant",
+                                "inputs": {
+                                  "valueType": "decimal",
+                                  "value": 0
+                                }
+                              }
+                            }
+                          },
+                          "thenSteps": [
+                            {
+                              "code": "emitPayrollElement",
+                              "inputs": {
+                                "payrollElement": "5003-ADOKEDV",
+                                "amount": {
+                                  "code": "variableReference",
+                                  "inputs": {
+                                    "name": "AnyaAdokedvezmeny"
+                                  }
+                                }
+                              }
+                            }
+                          ],
+                          "elseSteps": []
+                        }
+                      }
+                    ],
+                    "elseSteps": []
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    }
+  ]
+}

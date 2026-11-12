@@ -1,0 +1,193 @@
+{
+  "ruleCode": "ORABERES_JELEN_TAV",
+  "name": "\u00D3rab\u00E9res jelenl\u00E9ti \u00E9s t\u00E1voll\u00E9tes b\u00E9re",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "isNotNull",
+          "inputs": {
+            "value": {
+              "code": "payrollElementValue",
+              "inputs": {
+                "payrollElement": "1001-ORABER"
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "Oraber",
+              "value": {
+                "code": "payrollElementValue",
+                "inputs": {
+                  "payrollElement": "1001-ORABER"
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "1200-EGYORA",
+              "amount": {
+                "code": "variableReference",
+                "inputs": {
+                  "name": "Oraber"
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "MrendOsszIdo",
+              "value": {
+                "code": "add",
+                "inputs": {
+                  "left": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2000-MRENDO"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2001-MRENDSZ"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "TenyLedolgSeg",
+              "value": {
+                "code": "subtract",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "MrendOsszIdo"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2002-FIZTAV"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "TenyLedolg",
+              "value": {
+                "code": "subtract",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "TenyLedolgSeg"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2003-NFIZTAV"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "1202-JELBER",
+              "amount": {
+                "code": "multiply",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "OraBer"
+                    }
+                  },
+                  "right": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "TenyLedolg"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "1203-TAVBER",
+              "amount": {
+                "code": "multiply",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "OraBer"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2002-FIZTAV"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "1101-ORABER",
+              "amount": {
+                "code": "add",
+                "inputs": {
+                  "left": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "1202-JELBER"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "1203-TAVBER"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    }
+  ]
+}

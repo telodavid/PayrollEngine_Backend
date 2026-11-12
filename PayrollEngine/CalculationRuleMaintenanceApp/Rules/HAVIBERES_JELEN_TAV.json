@@ -1,0 +1,216 @@
+{
+  "ruleCode": "HAVIBERES_JELEN_TAV",
+  "name": "Havib\u00E9res jelenl\u00E9ti \u00E9s t\u00E1voll\u00E9tes b\u00E9re",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "isNotNull",
+          "inputs": {
+            "value": {
+              "code": "payrollElementValue",
+              "inputs": {
+                "payrollElement": "1000-HAVIBER"
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "HaviBerOsszeg",
+              "value": {
+                "code": "payrollElementValue",
+                "inputs": {
+                  "payrollElement": "1000-HAVIBER"
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "MrendOsszIdo",
+              "value": {
+                "code": "add",
+                "inputs": {
+                  "left": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2000-MRENDO"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2001-MRENDSZ"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "OraBer",
+              "value": {
+                "code": "divide",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "HaviBerOsszeg"
+                    }
+                  },
+                  "right": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "MrendOsszIdo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "1200-EGYORA",
+              "amount": {
+                "code": "variableReference",
+                "inputs": {
+                  "name": "OraBer"
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "TenyLedolgSeg",
+              "value": {
+                "code": "subtract",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "MrendOsszIdo"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2002-FIZTAV"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "setVariable",
+            "inputs": {
+              "name": "TenyLedolg",
+              "value": {
+                "code": "subtract",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "TenyLedolgSeg"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2003-NFIZTAV"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "1202-JELBER",
+              "amount": {
+                "code": "multiply",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "OraBer"
+                    }
+                  },
+                  "right": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "TenyLedolg"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "1203-TAVBER",
+              "amount": {
+                "code": "multiply",
+                "inputs": {
+                  "left": {
+                    "code": "variableReference",
+                    "inputs": {
+                      "name": "OraBer"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "2002-FIZTAV"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "1100-HAVIBER",
+              "amount": {
+                "code": "add",
+                "inputs": {
+                  "left": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "1202-JELBER"
+                    }
+                  },
+                  "right": {
+                    "code": "calculatedPayrollElementValue",
+                    "inputs": {
+                      "payrollElement": "1203-TAVBER"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "elseSteps": []
+      }
+    }
+  ]
+}

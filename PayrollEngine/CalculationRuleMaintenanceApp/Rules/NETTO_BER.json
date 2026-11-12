@@ -1,0 +1,46 @@
+{
+  "ruleCode": "NETTO_BER",
+  "name": "Nettó bér kiszámítása",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "6000-NETTO",
+        "amount": {
+          "code": "subtract",
+          "inputs": {
+            "left": {
+              "code": "subtract",
+              "inputs": {
+                "left": {
+                  "code": "calculatedPayrollElementValue",
+                  "inputs": {
+                    "payrollElement": "4000-BRUTTÓ"
+                  }
+                },
+                "right": {
+                  "code": "calculatedPayrollElementValue",
+                  "inputs": {
+                    "payrollElement": "5001-TBH"
+                  }
+                }
+              }
+            },
+            "right": {
+              "code": "calculatedPayrollElementValue",
+              "inputs": {
+                "payrollElement": "5000-SZJA"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

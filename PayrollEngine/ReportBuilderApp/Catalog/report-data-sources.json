@@ -1,0 +1,531 @@
+{
+  "version": 2,
+  "sources": [
+    {
+      "code": "EMPLOYEE",
+      "displayName": "Munkavállalók",
+      "root": {
+        "schema": "dbo",
+        "entity": "Employee",
+        "alias": "employee"
+      },
+      "employeeIdField": "dbo.Employee.EmployeeId",
+      "companyIdField": "dbo.Employment.CompanyId",
+      "fields": [
+        {
+          "reference": "dbo.Employee.EmployeeId",
+          "displayName": "Dolgozóazonosító",
+          "entityAlias": "employee",
+          "column": "EmployeeId",
+          "type": "integer"
+        },
+        {
+          "reference": "dbo.Employee.FirstName",
+          "displayName": "Keresztnév",
+          "entityAlias": "employee",
+          "column": "FirstName",
+          "type": "text"
+        },
+        {
+          "reference": "dbo.Employee.LastName",
+          "displayName": "Vezetéknév",
+          "entityAlias": "employee",
+          "column": "LastName",
+          "type": "text"
+        },
+        {
+          "reference": "dbo.Employee.BirthDate",
+          "displayName": "Születési dátum",
+          "entityAlias": "employee",
+          "column": "BirthDate",
+          "type": "date",
+          "isNullable": true
+        },
+        {
+          "reference": "dbo.Employee.IsActive",
+          "displayName": "Aktív dolgozó",
+          "entityAlias": "employee",
+          "column": "IsActive",
+          "type": "boolean"
+        },
+        {
+          "reference": "dbo.Employee.PersonalId",
+          "displayName": "Személyazonosító",
+          "entityAlias": "employee",
+          "column": "PersonalId",
+          "type": "text",
+          "isNullable": true
+        },
+        {
+          "reference": "dbo.Employee.TaxId",
+          "displayName": "Adóazonosító",
+          "entityAlias": "employee",
+          "column": "TaxId",
+          "type": "text",
+          "isNullable": true
+        },
+        {
+          "reference": "dbo.Employee.TAJId",
+          "displayName": "TAJ-szám",
+          "entityAlias": "employee",
+          "column": "TAJId",
+          "type": "text",
+          "isNullable": true
+        },
+        {
+          "reference": "dbo.Employee.Address",
+          "displayName": "Dolgozó címe",
+          "entityAlias": "employee",
+          "column": "Address",
+          "type": "text",
+          "isNullable": true
+        },
+        {
+          "reference": "dbo.Employee.PayrollRunFrom",
+          "displayName": "Számfejtés kezdő dátuma",
+          "entityAlias": "employee",
+          "column": "PayrollRunFrom",
+          "type": "date",
+          "isNullable": true
+        },
+        {
+          "reference": "dbo.Employee.JoinDate",
+          "displayName": "Belépés dátuma",
+          "entityAlias": "employee",
+          "column": "JoinDate",
+          "type": "date",
+          "isNullable": true
+        },
+        {
+          "reference": "dbo.Employee.TerminationDate",
+          "displayName": "Kilépés dátuma",
+          "entityAlias": "employee",
+          "column": "TerminationDate",
+          "type": "date",
+          "isNullable": true
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.EmployeeBankAccountId",
+          "displayName": "Bankszámlarekord azonosítója",
+          "entityAlias": "bankAccount",
+          "column": "EmployeeBankAccountId",
+          "type": "integer",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_BANK_ACCOUNTS"
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.AccountIdentifier",
+          "displayName": "Bankszámlaszám",
+          "entityAlias": "bankAccount",
+          "column": "AccountIdentifier",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_BANK_ACCOUNTS"
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.AccountType",
+          "displayName": "Bankszámla típusa",
+          "entityAlias": "bankAccount",
+          "column": "AccountType",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_BANK_ACCOUNTS"
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.ValidFrom",
+          "displayName": "Bankszámla érvényességének kezdete",
+          "entityAlias": "bankAccount",
+          "column": "ValidFrom",
+          "type": "date",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_BANK_ACCOUNTS"
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.ValidTo",
+          "displayName": "Bankszámla érvényességének vége",
+          "entityAlias": "bankAccount",
+          "column": "ValidTo",
+          "type": "date",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_BANK_ACCOUNTS"
+        },
+        {
+          "reference": "dbo.Employment.EmploymentId",
+          "displayName": "Munkaviszony azonosítója",
+          "entityAlias": "employment",
+          "column": "EmploymentId",
+          "type": "integer",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_EMPLOYMENTS"
+        },
+        {
+          "reference": "dbo.Employment.CompanyId",
+          "displayName": "Cégazonosító",
+          "entityAlias": "employment",
+          "column": "CompanyId",
+          "type": "integer",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_EMPLOYMENTS"
+        },
+        {
+          "reference": "dbo.Employment.ValidFrom",
+          "displayName": "Munkaviszony érvényességének kezdete",
+          "entityAlias": "employment",
+          "column": "ValidFrom",
+          "type": "date",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_EMPLOYMENTS"
+        },
+        {
+          "reference": "dbo.Employment.ValidTo",
+          "displayName": "Munkaviszony érvényességének vége",
+          "entityAlias": "employment",
+          "column": "ValidTo",
+          "type": "date",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYEE_EMPLOYMENTS"
+        },
+        {
+          "reference": "dbo.Company.CompanyName",
+          "displayName": "Cég neve",
+          "entityAlias": "company",
+          "column": "CompanyName",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYMENT_COMPANY"
+        },
+        {
+          "reference": "dbo.Company.CompanyAddress",
+          "displayName": "Cég címe",
+          "entityAlias": "company",
+          "column": "CompanyAddress",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYMENT_COMPANY"
+        },
+        {
+          "reference": "dbo.Company.BankAccountNumber",
+          "displayName": "Cég bankszámlaszáma",
+          "entityAlias": "company",
+          "column": "BankAccountNumber",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYMENT_COMPANY"
+        },
+        {
+          "reference": "dbo.Company.TaxId",
+          "displayName": "Cég adószáma",
+          "entityAlias": "company",
+          "column": "TaxId",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYMENT_COMPANY"
+        },
+        {
+          "reference": "dbo.Company.PhoneNumber",
+          "displayName": "Cég telefonszáma",
+          "entityAlias": "company",
+          "column": "PhoneNumber",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "EMPLOYMENT_COMPANY"
+        }
+      ],
+      "relations": [
+        {
+          "code": "EMPLOYEE_BANK_ACCOUNTS",
+          "displayName": "Dolgozó bankszámlái",
+          "target": {
+            "schema": "dbo",
+            "entity": "EmployeeBankAccount",
+            "alias": "bankAccount"
+          },
+          "joinType": "LEFT",
+          "cardinality": "ONE_TO_MANY",
+          "conditions": [
+            {
+              "leftEntityAlias": "employee",
+              "leftColumn": "EmployeeId",
+              "rightEntityAlias": "bankAccount",
+              "rightColumn": "EmployeeId"
+            }
+          ],
+          "validity": {
+            "validFromField": "dbo.EmployeeBankAccount.ValidFrom",
+            "validToField": "dbo.EmployeeBankAccount.ValidTo"
+          }
+        },
+        {
+          "code": "EMPLOYEE_EMPLOYMENTS",
+          "displayName": "Dolgozó munkaviszonyai",
+          "target": {
+            "schema": "dbo",
+            "entity": "Employment",
+            "alias": "employment"
+          },
+          "joinType": "LEFT",
+          "cardinality": "ONE_TO_MANY",
+          "conditions": [
+            {
+              "leftEntityAlias": "employee",
+              "leftColumn": "EmployeeId",
+              "rightEntityAlias": "employment",
+              "rightColumn": "EmployeeId"
+            }
+          ],
+          "validity": {
+            "validFromField": "dbo.Employment.ValidFrom",
+            "validToField": "dbo.Employment.ValidTo"
+          }
+        },
+        {
+          "code": "EMPLOYMENT_COMPANY",
+          "displayName": "Munkaviszonyhoz tartozó cég",
+          "target": {
+            "schema": "dbo",
+            "entity": "Company",
+            "alias": "company"
+          },
+          "joinType": "LEFT",
+          "cardinality": "MANY_TO_ONE",
+          "parentRelationCode": "EMPLOYEE_EMPLOYMENTS",
+          "conditions": [
+            {
+              "leftEntityAlias": "employment",
+              "leftColumn": "CompanyId",
+              "rightEntityAlias": "company",
+              "rightColumn": "CompanyId"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "PAYROLL_RESULT",
+      "displayName": "Számfejtési eredmények",
+      "root": {
+        "schema": "dbo",
+        "entity": "PayrollResult",
+        "alias": "result"
+      },
+      "employeeIdField": "dbo.PayrollResult.EmployeeId",
+      "validity": {
+        "dateField": "dbo.PayrollResult.Period"
+      },
+      "fields": [
+        {
+          "reference": "dbo.PayrollResult.PayrollResultId",
+          "displayName": "Eredményazonosító",
+          "entityAlias": "result",
+          "column": "PayrollResultId",
+          "type": "integer"
+        },
+        {
+          "reference": "dbo.PayrollResult.RunId",
+          "displayName": "Futásazonosító",
+          "entityAlias": "result",
+          "column": "RunId",
+          "type": "guid"
+        },
+        {
+          "reference": "dbo.PayrollResult.EmployeeId",
+          "displayName": "Dolgozóazonosító",
+          "entityAlias": "result",
+          "column": "EmployeeId",
+          "type": "integer"
+        },
+        {
+          "reference": "dbo.PayrollResult.Period",
+          "displayName": "Számfejtési periódus",
+          "entityAlias": "result",
+          "column": "Period",
+          "type": "month"
+        },
+        {
+          "reference": "dbo.PayrollResult.ResultType",
+          "displayName": "Eredménytípus",
+          "entityAlias": "result",
+          "column": "ResultType",
+          "type": "text"
+        },
+        {
+          "reference": "dbo.PayrollResult.PayrollElementId",
+          "displayName": "Bérelemazonosító",
+          "entityAlias": "result",
+          "column": "PayrollElementId",
+          "type": "integer"
+        },
+        {
+          "reference": "dbo.PayrollResult.Amount",
+          "displayName": "Összeg",
+          "entityAlias": "result",
+          "column": "Amount",
+          "type": "decimal"
+        },
+        {
+          "reference": "dbo.PayrollResult.RunDate",
+          "displayName": "Futás dátuma",
+          "entityAlias": "result",
+          "column": "RunDate",
+          "type": "datetime"
+        },
+        {
+          "reference": "dbo.PayrollResult.RunByUserId",
+          "displayName": "Futtató felhasználó azonosítója",
+          "entityAlias": "result",
+          "column": "RunByUserId",
+          "type": "integer"
+        },
+        {
+          "reference": "dbo.Employee.FirstName",
+          "displayName": "Keresztnév",
+          "entityAlias": "employee",
+          "column": "FirstName",
+          "type": "text",
+          "requiredRelationCode": "RESULT_EMPLOYEE"
+        },
+        {
+          "reference": "dbo.Employee.LastName",
+          "displayName": "Vezetéknév",
+          "entityAlias": "employee",
+          "column": "LastName",
+          "type": "text",
+          "requiredRelationCode": "RESULT_EMPLOYEE"
+        },
+        {
+          "reference": "dbo.Employee.Address",
+          "displayName": "Dolgozó címe",
+          "entityAlias": "employee",
+          "column": "Address",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "RESULT_EMPLOYEE"
+        },
+        {
+          "reference": "dbo.Employee.TaxId",
+          "displayName": "Adóazonosító",
+          "entityAlias": "employee",
+          "column": "TaxId",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "RESULT_EMPLOYEE"
+        },
+        {
+          "reference": "dbo.PayrollElement.Code",
+          "displayName": "Bérelemkód",
+          "entityAlias": "payrollElement",
+          "column": "Code",
+          "type": "text",
+          "requiredRelationCode": "RESULT_PAYROLL_ELEMENT"
+        },
+        {
+          "reference": "dbo.PayrollElement.Name",
+          "displayName": "Bérelem neve",
+          "entityAlias": "payrollElement",
+          "column": "Name",
+          "type": "text",
+          "requiredRelationCode": "RESULT_PAYROLL_ELEMENT"
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.AccountIdentifier",
+          "displayName": "Bankszámlaszám",
+          "entityAlias": "bankAccount",
+          "column": "AccountIdentifier",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "RESULT_BANK_ACCOUNTS"
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.AccountType",
+          "displayName": "Bankszámla típusa",
+          "entityAlias": "bankAccount",
+          "column": "AccountType",
+          "type": "text",
+          "isNullable": true,
+          "requiredRelationCode": "RESULT_BANK_ACCOUNTS"
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.ValidFrom",
+          "displayName": "Bankszámla érvényességének kezdete",
+          "entityAlias": "bankAccount",
+          "column": "ValidFrom",
+          "type": "date",
+          "isNullable": true,
+          "requiredRelationCode": "RESULT_BANK_ACCOUNTS"
+        },
+        {
+          "reference": "dbo.EmployeeBankAccount.ValidTo",
+          "displayName": "Bankszámla érvényességének vége",
+          "entityAlias": "bankAccount",
+          "column": "ValidTo",
+          "type": "date",
+          "isNullable": true,
+          "requiredRelationCode": "RESULT_BANK_ACCOUNTS"
+        }
+      ],
+      "relations": [
+        {
+          "code": "RESULT_EMPLOYEE",
+          "displayName": "Eredményhez tartozó dolgozó",
+          "target": {
+            "schema": "dbo",
+            "entity": "Employee",
+            "alias": "employee"
+          },
+          "joinType": "INNER",
+          "cardinality": "MANY_TO_ONE",
+          "conditions": [
+            {
+              "leftEntityAlias": "result",
+              "leftColumn": "EmployeeId",
+              "rightEntityAlias": "employee",
+              "rightColumn": "EmployeeId"
+            }
+          ]
+        },
+        {
+          "code": "RESULT_PAYROLL_ELEMENT",
+          "displayName": "Eredményhez tartozó bérelem",
+          "target": {
+            "schema": "dbo",
+            "entity": "PayrollElement",
+            "alias": "payrollElement"
+          },
+          "joinType": "INNER",
+          "cardinality": "MANY_TO_ONE",
+          "conditions": [
+            {
+              "leftEntityAlias": "result",
+              "leftColumn": "PayrollElementId",
+              "rightEntityAlias": "payrollElement",
+              "rightColumn": "PayrollElementId"
+            }
+          ]
+        },
+        {
+          "code": "RESULT_BANK_ACCOUNTS",
+          "displayName": "Dolgozó bankszámlái",
+          "target": {
+            "schema": "dbo",
+            "entity": "EmployeeBankAccount",
+            "alias": "bankAccount"
+          },
+          "joinType": "LEFT",
+          "cardinality": "ONE_TO_MANY",
+          "conditions": [
+            {
+              "leftEntityAlias": "result",
+              "leftColumn": "EmployeeId",
+              "rightEntityAlias": "bankAccount",
+              "rightColumn": "EmployeeId"
+            }
+          ],
+          "validity": {
+            "validFromField": "dbo.EmployeeBankAccount.ValidFrom",
+            "validToField": "dbo.EmployeeBankAccount.ValidTo"
+          }
+        }
+      ]
+    }
+  ]
+}

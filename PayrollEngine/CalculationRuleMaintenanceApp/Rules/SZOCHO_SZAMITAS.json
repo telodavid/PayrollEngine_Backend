@@ -1,0 +1,100 @@
+{
+  "ruleCode": "SZOCHO_SZAMITAS",
+  "name": "Szoci\u00E1lis hozz\u00E1j\u00E1rul\u00E1s kisz\u00E1m\u00EDt\u00E1sa",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "SZOCHOSzazalek",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "dataReference",
+          "inputs": {
+            "reference": "payrollRun.constants"
+          }
+        },
+        "itemVariable": "AktualisKonstans",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "equal",
+                "inputs": {
+                  "left": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "dbo.Constant.ConstantId"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "text",
+                      "value": "SZOCH"
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "SZOCHOSzazalek",
+                    "value": {
+                      "code": "dataReference",
+                      "inputs": {
+                        "reference": "dbo.Constant.Value"
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "5002-SZOCHO",
+        "amount": {
+          "code": "multiply",
+          "inputs": {
+            "left": {
+              "code": "calculatedPayrollElementValue",
+              "inputs": {
+                "payrollElement": "4000-BRUTT\u00D3"
+              }
+            },
+            "right": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "SZOCHOSzazalek"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

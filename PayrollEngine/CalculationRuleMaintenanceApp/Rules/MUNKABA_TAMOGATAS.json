@@ -1,0 +1,65 @@
+{
+  "ruleCode": "MUNKABA_TAMOGATAS",
+  "name": "Munk\u00E1ba j\u00E1r\u00F3 t\u00E1mogat\u00E1s",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "greaterThanOrEqual",
+          "inputs": {
+            "left": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "MASTER_DATA.KIEGALAPADAT.TAVOL"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "decimal",
+                "value": 50
+              }
+            }
+          }
+        },
+        "thenSteps": [
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "3000-MJTAM",
+              "amount": {
+                "code": "constant",
+                "inputs": {
+                  "valueType": "decimal",
+                  "value": 10000
+                }
+              }
+            }
+          }
+        ],
+        "elseSteps": [
+          {
+            "code": "emitPayrollElement",
+            "inputs": {
+              "payrollElement": "3000-MJTAM",
+              "amount": {
+                "code": "constant",
+                "inputs": {
+                  "valueType": "decimal",
+                  "value": 5100
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

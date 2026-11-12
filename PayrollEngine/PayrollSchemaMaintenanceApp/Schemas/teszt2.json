@@ -1,0 +1,17 @@
+{
+  "schemaCode": "teszt2",
+  "name": "teszt2",
+  "version": 1,
+  "isActive": true,
+  "blocks": [
+    {
+      "name": "Blokk 1",
+      "rules": [
+        {
+          "ruleCode": "MRENDO_MUNKARENDI_ORA",
+          "ruleName": "Munkarend szerinti \u00F3r\u00E1k"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,355 @@
+@PayrollEngine_HostAddress = https://localhost:7291
+@PayrollEngine_HostAddress = https://localhost:7291
+
+POST {{PayrollEngine_HostAddress}}/api/login
+Content-Type: application/json
+
+{
+  "userName": "SYSTEM",
+  "password": "PASSWORD"
+}
+
+###
+GET {{PayrollEngine_HostAddress}}/api/reports/data-catalog?sourceCode=EMPLOYEE
+###
+GET {{PayrollEngine_HostAddress}}/api/calculation-rules/operations
+
+###
+GET {{PayrollEngine_HostAddress}}/api/calculation-rules/data-catalog?search=PreviousResults
+###
+GET {{PayrollEngine_HostAddress}}/api/calculation-rules/data-catalog?search=WorkSchedule
+Accept: application/json
+###
+### Keresés dinamikus mezők között
+GET {{PayrollEngine_HostAddress}}/api/calculation-rules/data-catalog?search=BONUS_CATEGORY
+Accept: application/json
+###
+GET {{PayrollEngine_HostAddress}}//api/calculation-rules/operations
+Accept: application/json
+###
+get {{PayrollEngine_HostAddress}}/api/calculation-rules
+Content-Type: application/json
+
+{
+  "ruleCode": "DYNAMIC_FIELD_VALID_REF_TEST"
+  "name": "Hibás dinamikus hivatkozás teszt",
+  "version": 1,
+  "isActive": true,
+  "steps": [
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "equal",
+          "inputs": {
+            "left": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "PAYROLL_ELEMENT.PAYROLL_TEST.BONUS_CATEGORY"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "text",
+                "value": "PERFORMANCE"
+              }
+            }
+          }
+        },
+        "thenSteps": []
+      }
+    }
+  ]
+}
+###
+POST {{PayrollEngine_HostAddress}}/api/calculation-rules
+Content-Type: application/json
+
+{
+  "ruleCode": "DYNAMIC_FIELD_VALID_REF_TEST",
+  "name": "Létező dinamikus hivatkozás teszt",
+  "version": 1,
+  "isActive": true,
+  "steps": [
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "equal",
+          "inputs": {
+            "left": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "PAYROLL_ELEMENT.PAYROLL_TEST.BONUS_CATEGORY"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "text",
+                "value": "PERFORMANCE"
+              }
+            }
+          }
+        },
+        "thenSteps": []
+      }
+    }
+  ]
+}
+###
+POST {{PayrollEngine_HostAddress}}/api/calculation-rules
+Content-Type: application/json
+
+{
+  "ruleCode": "DYNAMIC_FIELD_VALID_REF_TEST",
+  "name": "Létező dinamikus hivatkozás teszt",
+  "version": 1,
+  "isActive": true,
+  "steps": [
+    {
+      "code": "if",
+      "inputs": {
+        "condition": {
+          "code": "equal",
+          "inputs": {
+            "left": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "PAYROLL_ELEMENT.PAYROLL_TEST.BONUS_CATEGORY"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "text",
+                "value": "PERFORMANCE"
+              }
+            }
+          }
+        },
+        "thenSteps": []
+      }
+    }
+  ]
+}
+###
+GET {{PayrollEngine_HostAddress}}/api/calculation-rules/DYNAMIC_FIELD_VALID_REF_TEST
+Accept: application/json
+###
+DELETE {{PayrollEngine_HostAddress}}/api/calculation-rules/DYNAMIC_FIELD_VALID_REF_TEST
+###
+GET {{PayrollEngine_HostAddress}}/api/payroll-schemas/available-rules
+Accept: application/json
+###
+POST {{PayrollEngine_HostAddress}}/api/payroll-schemas
+Content-Type: application/json
+
+{
+  "schemaCode": "TEST_PAYROLL_SCHEMA",
+  "name": "Teszt bérszámfejtési séma",
+  "version": 1,
+  "isActive": true,
+  "blocks": [
+    {
+      "name": "Törzsadatkiolvasás",
+      "rules": [
+        {
+          "ruleCode": "IT_JOB_PREMIUM",
+          "ruleName": "IT munkaköri prémium módosított"
+        }
+      ]
+    },
+    {
+      "name": "Szabadságok kezelése",
+      "rules": [
+        {
+          "ruleCode": "IT_JOB_PREMIUM",
+          "ruleName": "IT munkaköri prémium módosított"
+        }
+      ]
+    }
+  ]
+}
+###
+PUT {{PayrollEngine_HostAddress}}/api/payroll-schemas/TEST_PAYROLL_SCHEMA
+Content-Type: application/json
+
+{
+  "schemaCode": "TEST_PAYROLL_SCHEMA",
+  "name": "Teszt bérszámfejtési séma módosított",
+  "version": 2,
+  "isActive": true,
+  "blocks": [
+    {
+      "name": "Törzsadatok beolvasása",
+      "rules": [
+        {
+          "ruleCode": "IT_JOB_PREMIUM",
+          "ruleName": "IT munkaköri prémium módosított"
+        }
+      ]
+    },
+    {
+      "name": "Szabadságok kezelése",
+      "rules": [
+        {
+          "ruleCode": "IT_JOB_PREMIUM",
+          "ruleName": "IT munkaköri prémium módosított"
+        }
+      ]
+    }
+  ]
+}
+###
+DELETE {{PayrollEngine_HostAddress}}/api/payroll-schemas/TEST_PAYROLL_SCHEMA
+###
+POST {{PayrollEngine_HostAddress}}/api/payroll-schemas
+Content-Type: application/json
+
+{
+  "schemaCode": "INVALID_RULE_REF_SCHEMA",
+  "name": "Hibás szabályhivatkozás teszt",
+  "version": 1,
+  "isActive": true,
+  "blocks": [
+    {
+      "name": "Teszt blokk",
+      "rules": [
+        {
+          "ruleCode": "NON_EXISTENT_RULE",
+          "ruleName": "Nem létező szabály"
+        }
+      ]
+    }
+  ]
+}
+###
+GET {{PayrollEngine_HostAddress}}/api/payroll-schemas
+Accept: application/json
+###
+POST https://localhost:7291/api/payroll-runs/employee-preview
+Content-Type: application/json
+
+{
+  "schemaCode": "TEST",
+  "periodFrom": "2026-10",
+  "periodTo": "2026-10",
+  "employeeIds": [1],
+  "includeInactive": false,
+  "isSimulation": true
+}
+###
+POST https://localhost:7291/api/payroll-runs/employee-preview
+Content-Type: application/json
+
+{
+  "schemaCode": "TEST",
+  "periodFrom": "2027-03",
+  "periodTo": "2027-03",
+  "employeeIds": [1],
+  "includeInactive": true,
+  "isSimulation": true
+}
+###
+POST {{PayrollEngine_HostAddress}}/api/payroll-runs/execute
+Content-Type: application/json
+
+{
+  "schemaCode": "TEST",
+  "periodFrom": "2027-03",
+  "periodTo": "2027-03",
+  "employeeIds": [1],
+  "includeInactive": true,
+  "isSimulation": true
+}
+###
+POST {{PayrollEngine_HostAddress}}/api/reports
+Content-Type: application/json
+
+{
+  "reportCode": "PAYROLL_ELEMENT_PER_EMPLOYEE",
+  "name": "Bérelemek dolgozónként",
+  "version": 1,
+  "isActive": true,
+  "dataSource": "PAYROLL_RESULT",
+  "xmlRootElementName": "PayrollExport",
+  "xmlRecordElementName": "Employee",
+  "fileNamePattern": "payroll_{period}_{employeeId}",
+  "fields": [
+    {
+      "code": "employeeId",
+      "displayName": "Dolgozóazonosító",
+      "outputName": "EmployeeId",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.EmployeeId"
+      },
+      "aggregation": "NONE"
+    },
+    {
+      "code": "period",
+      "displayName": "Periódus",
+      "outputName": "Period",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.Period"
+      },
+      "aggregation": "NONE"
+    },
+    {
+      "code": "payrollElement",
+      "displayName": "Bérelemkód",
+      "outputName": "PayrollElement",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollElement.Code"
+      },
+      "aggregation": "NONE"
+    },
+    {
+      "code": "amount",
+      "displayName": "Összeg",
+      "outputName": "Amount",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.Amount"
+      },
+      "aggregation": "SUM",
+      "format": "0.00"
+    },
+    {
+      "code": "exportType",
+      "displayName": "Kimeneti típus",
+      "outputName": "ExportType",
+      "value": {
+        "kind": "CONSTANT",
+        "constant": "PAYROLL"
+      },
+      "aggregation": "NONE"
+    }
+  ],
+  "grouping": {
+    "rowMode": "GROUPED",
+    "groupBy": [
+      "dbo.PayrollResult.EmployeeId",
+      "dbo.PayrollResult.Period",
+      "dbo.PayrollElement.Code"
+    ],
+    "splitFilesBy": [
+      "dbo.PayrollResult.Period",
+      "dbo.PayrollResult.EmployeeId"
+    ],
+    "sortBy": [
+      "dbo.PayrollResult.EmployeeId",
+      "dbo.PayrollElement.Code"
+    ]
+  }
+}
+###
+GET {{PayrollEngine_HostAddress}}/api/reports/PAYROLL_ELEMENT_PER_EMPLOYEE
+Accept: application/json
+###
+GET {{PayrollEngine_HostAddress}}/api/reports/data-catalog?search=PayrollResult
+Accept: application/json

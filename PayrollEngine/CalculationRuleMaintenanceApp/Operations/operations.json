@@ -1,0 +1,873 @@
+﻿{
+  "catalogVersion": 2,
+  "valueTypes": [
+    "text",
+    "decimal",
+    "date",
+    "time",
+    "boolean",
+    "option",
+    "collection"
+  ],
+  "operations": [
+    {
+      "code": "callRule",
+      "category": "rule",
+      "kind": "expression",
+      "displayName": "Segédszabály meghívása",
+      "description": "Meghív egy segédszabályt, átadja a megadott bemeneteket, majd visszaadja annak eredményét.",
+      "resultType": "dynamic",
+      "inputs": [
+        {
+          "name": "ruleCode",
+          "type": "ruleReference",
+          "required": true,
+          "sourceCatalog": "callableRules"
+        },
+        {
+          "name": "arguments",
+          "type": "ruleArguments",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "invokeRule",
+      "category": "rule",
+      "kind": "statement",
+      "displayName": "Segédszabály meghívása",
+      "description": "Meghívja a kiválasztott segédszabályt, átadja a bemeneteit, és a visszatérési értékét a megadott változóba teszi.",
+      "inputs": [
+        {
+          "name": "ruleCode",
+          "type": "ruleReference",
+          "required": true,
+          "sourceCatalog": "callableRules"
+        },
+        {
+          "name": "arguments",
+          "type": "ruleArguments",
+          "required": true
+        },
+        {
+          "name": "resultVariable",
+          "type": "variableName",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "constant",
+      "category": "value",
+      "kind": "operand",
+      "displayName": "Konstans érték",
+      "description": "A szabályban közvetlenül megadott érték.",
+      "resultType": "dynamic",
+      "inputs": [
+        {
+          "name": "valueType",
+          "type": "valueTypeSelector",
+          "required": true,
+          "sourceCatalog": "valueTypes"
+        },
+        {
+          "name": "value",
+          "type": "dynamic",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "dataReference",
+      "category": "value",
+      "kind": "operand",
+      "displayName": "Adatbázisból származó adat",
+      "description": "A számfejtési adatkatalógusból kiválasztott adat.",
+      "resultType": "dynamic",
+      "sourceCatalog": "payrollDataCatalog",
+      "inputs": [
+        {
+          "name": "reference",
+          "type": "dataReferenceSelector",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "workCalendar",
+      "category": "collection",
+      "kind": "operand",
+      "displayName": "Munkaidő-naptár",
+      "description": "A számfejtési hónapra előállított napi munkaidő-naptár. Lista feldolgozására vagy összegzésére használható.",
+      "resultType": "collection",
+      "inputs": []
+    },
+    {
+      "code": "calendarEntries",
+      "category": "collection",
+      "kind": "operand",
+      "displayName": "Naptári napok és események",
+      "description": "A számfejtési hónap napjai munkarendi adatokkal és az adott napra érvényes eseményekkel. Egy naphoz több esemény esetén külön sor készül; esemény nélkül is tartalmazza a naptári napot.",
+      "resultType": "collection",
+      "inputs": []
+    },
+    {
+      "code": "payrollElementValues",
+      "category": "collection",
+      "kind": "operand",
+      "displayName": "Bérelemek és értékeik",
+      "description": "A munkavállalóhoz rendelt bérelemeket és a szabályok által eddig kiszámított bérelemeket adja vissza. A bérelem dinamikus tulajdonságai ugyanabban a ciklussorban érhetők el.",
+      "resultType": "collection",
+      "inputs": []
+    },
+    {
+      "code": "variableReference",
+      "category": "value",
+      "kind": "operand",
+      "displayName": "Futás közbeni változó",
+      "description": "A szabályban korábban beállított változó értéke.",
+      "resultType": "dynamic",
+      "sourceCatalog": "ruleVariables",
+      "inputs": [
+        {
+          "name": "name",
+          "type": "variableName",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "payrollElementValue",
+      "category": "payroll",
+      "kind": "operand",
+      "displayName": "Bérelem összege",
+      "description": "A kiválasztott, munkavállalóhoz rendelt bérelem adott számfejtési időszakra érvényes összegét adja vissza.",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "payrollElement",
+          "type": "payrollElementReference",
+          "required": true,
+          "sourceCatalog": "activePayrollElements"
+        }
+      ]
+    },
+    {
+      "code": "calculatedPayrollElementValue",
+      "category": "payroll",
+      "kind": "operand",
+      "displayName": "Korábban kiszámolt bérelem összege",
+      "description": "A futás során eddig kibocsátott, azonos kódú bérelemek összegét adja vissza. Ha még nem bocsátott ki ilyen bérelemet, az érték hiányzóként kezelődik.",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "payrollElement",
+          "type": "payrollElementReference",
+          "required": true,
+          "sourceCatalog": "activePayrollElements"
+        }
+      ]
+    },
+    {
+      "code": "setVariable",
+      "category": "variable",
+      "kind": "statement",
+      "displayName": "Változó beállítása",
+      "description": "Értéket ad egy, a szabály futása alatt élő változónak.",
+      "inputs": [
+        {
+          "name": "name",
+          "type": "variableName",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "dynamic",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "equal",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Egyenlő",
+      "symbol": "=",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "text",
+        "decimal",
+        "date",
+        "boolean",
+        "time",
+        "option"
+      ],
+      "inputs": [
+        {
+          "name": "left",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "right"
+        },
+        {
+          "name": "right",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "left"
+        }
+      ]
+    },
+    {
+      "code": "notEqual",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Nem egyenlő",
+      "symbol": "!=",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "text",
+        "decimal",
+        "date",
+        "boolean",
+        "time",
+        "option"
+      ],
+      "inputs": [
+        {
+          "name": "left",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "right"
+        },
+        {
+          "name": "right",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "left"
+        }
+      ]
+    },
+    {
+      "code": "greaterThan",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Nagyobb",
+      "symbol": ">",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "decimal",
+        "date",
+        "time"
+      ],
+      "inputs": [
+        {
+          "name": "left",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "right"
+        },
+        {
+          "name": "right",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "left"
+        }
+      ]
+    },
+    {
+      "code": "greaterThanOrEqual",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Nagyobb vagy egyenlő",
+      "symbol": ">=",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "decimal",
+        "date",
+        "time"
+      ],
+      "inputs": [
+        {
+          "name": "left",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "right"
+        },
+        {
+          "name": "right",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "left"
+        }
+      ]
+    },
+    {
+      "code": "lessThan",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Kisebb",
+      "symbol": "<",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "decimal",
+        "date",
+        "time"
+      ],
+      "inputs": [
+        {
+          "name": "left",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "right"
+        },
+        {
+          "name": "right",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "left"
+        }
+      ]
+    },
+    {
+      "code": "lessThanOrEqual",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Kisebb vagy egyenlő",
+      "symbol": "<=",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "decimal",
+        "date",
+        "time"
+      ],
+      "inputs": [
+        {
+          "name": "left",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "right"
+        },
+        {
+          "name": "right",
+          "type": "dynamic",
+          "required": true,
+          "sameTypeAs": "left"
+        }
+      ]
+    },
+    {
+      "code": "contains",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Tartalmazza",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "text"
+      ],
+      "inputs": [
+        {
+          "name": "value",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "searchText",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "startsWith",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Ezzel kezdődik",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "text"
+      ],
+      "inputs": [
+        {
+          "name": "value",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "prefix",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "isNull",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Nincs kitöltve",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "text",
+        "decimal",
+        "date",
+        "boolean",
+        "option",
+        "time"
+      ],
+      "inputs": [
+        {
+          "name": "value",
+          "type": "dynamic",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "isNotNull",
+      "category": "comparison",
+      "kind": "expression",
+      "displayName": "Ki van töltve",
+      "resultType": "boolean",
+      "supportedTypes": [
+        "text",
+        "decimal",
+        "date",
+        "boolean",
+        "option",
+        "time"
+      ],
+      "inputs": [
+        {
+          "name": "value",
+          "type": "dynamic",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "and",
+      "category": "logic",
+      "kind": "expression",
+      "displayName": "ÉS",
+      "resultType": "boolean",
+      "inputs": [
+        {
+          "name": "conditions",
+          "type": "booleanExpressionList",
+          "required": true,
+          "minimumItems": 2
+        }
+      ]
+    },
+    {
+      "code": "or",
+      "category": "logic",
+      "kind": "expression",
+      "displayName": "VAGY",
+      "resultType": "boolean",
+      "inputs": [
+        {
+          "name": "conditions",
+          "type": "booleanExpressionList",
+          "required": true,
+          "minimumItems": 2
+        }
+      ]
+    },
+    {
+      "code": "not",
+      "category": "logic",
+      "kind": "expression",
+      "displayName": "NEM",
+      "resultType": "boolean",
+      "inputs": [
+        {
+          "name": "condition",
+          "type": "booleanExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "add",
+      "category": "math",
+      "kind": "expression",
+      "displayName": "Összeadás",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "left",
+          "type": "decimal",
+          "required": true
+        },
+        {
+          "name": "right",
+          "type": "decimal",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "subtract",
+      "category": "math",
+      "kind": "expression",
+      "displayName": "Kivonás",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "left",
+          "type": "decimal",
+          "required": true
+        },
+        {
+          "name": "right",
+          "type": "decimal",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "multiply",
+      "category": "math",
+      "kind": "expression",
+      "displayName": "Szorzás",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "left",
+          "type": "decimal",
+          "required": true
+        },
+        {
+          "name": "right",
+          "type": "decimal",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "divide",
+      "category": "math",
+      "kind": "expression",
+      "displayName": "Osztás",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "left",
+          "type": "decimal",
+          "required": true
+        },
+        {
+          "name": "right",
+          "type": "decimal",
+          "required": true,
+          "cannotBeZero": true
+        }
+      ]
+    },
+    {
+      "code": "round",
+      "category": "math",
+      "kind": "expression",
+      "displayName": "Kerekítés",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "value",
+          "type": "decimal",
+          "required": true
+        },
+        {
+          "name": "digits",
+          "type": "integer",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "if",
+      "category": "controlFlow",
+      "kind": "block",
+      "displayName": "IF / ELSE",
+      "inputs": [
+        {
+          "name": "condition",
+          "type": "booleanExpression",
+          "required": true
+        },
+        {
+          "name": "thenSteps",
+          "type": "statementList",
+          "required": true
+        },
+        {
+          "name": "elseSteps",
+          "type": "statementList",
+          "required": false
+        }
+      ]
+    },
+    {
+      "code": "switch",
+      "category": "controlFlow",
+      "kind": "block",
+      "displayName": "SWITCH / CASE / DEFAULT",
+      "inputs": [
+        {
+          "name": "value",
+          "type": "dynamic",
+          "required": true
+        },
+        {
+          "name": "cases",
+          "type": "caseList",
+          "required": true
+        },
+        {
+          "name": "defaultSteps",
+          "type": "statementList",
+          "required": false
+        }
+      ]
+    },
+    {
+      "code": "forEach",
+      "category": "collection",
+      "kind": "block",
+      "displayName": "Lista elemeinek feldolgozása",
+      "inputs": [
+        {
+          "name": "items",
+          "type": "collection",
+          "required": true
+        },
+        {
+          "name": "itemVariable",
+          "type": "variableName",
+          "required": true
+        },
+        {
+          "name": "steps",
+          "type": "statementList",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "count",
+      "category": "collection",
+      "kind": "expression",
+      "displayName": "Darabszám",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "items",
+          "type": "collection",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "sum",
+      "category": "collection",
+      "kind": "expression",
+      "displayName": "Összegzés",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "items",
+          "type": "collection",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "decimalExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "any",
+      "category": "collection",
+      "kind": "expression",
+      "displayName": "Van-e találat",
+      "resultType": "boolean",
+      "inputs": [
+        {
+          "name": "items",
+          "type": "collection",
+          "required": true
+        },
+        {
+          "name": "condition",
+          "type": "booleanExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "emitPayrollElement",
+      "category": "payrollResult",
+      "kind": "statement",
+      "displayName": "Bérelem-eredmény kiadása",
+      "description": "A kiszámított összeget a kiválasztott bérelemhez számfejtési eredményként rögzíti. Az O/A/P eredménytípust a számfejtési futás határozza meg.",
+      "inputs": [
+        {
+          "name": "payrollElement",
+          "type": "payrollElementReference",
+          "required": true,
+          "sourceCatalog": "activePayrollElements"
+        },
+        {
+          "name": "amount",
+          "type": "decimalExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "dateRange",
+      "category": "dateTime",
+      "kind": "expression",
+      "displayName": "Napok előállítása dátumtartományból",
+      "description": "A kezdő és záró dátumot is tartalmazó naptári napok listája. Legfeljebb 366 napot ad vissza.",
+      "resultType": "collection",
+      "inputs": [
+        {
+          "name": "start",
+          "type": "dateExpression",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "dateExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "dateDifferenceDays",
+      "category": "dateTime",
+      "kind": "expression",
+      "displayName": "Napok különbsége",
+      "description": "A záró dátum mínusz a kezdő dátum napjainak száma.",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "start",
+          "type": "dateExpression",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "dateExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "completedYears",
+      "category": "dateTime",
+      "kind": "expression",
+      "displayName": "Teljesen eltelt évek száma",
+      "description": "Két dátum között a már teljesen eltelt naptári éveket adja vissza. Életkor és munkaviszonyi jubileum számítására használható.",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "start",
+          "type": "dateExpression",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "dateExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "dayOfWeek",
+      "category": "dateTime",
+      "kind": "expression",
+      "displayName": "A hét napja",
+      "description": "ISO-8601 napindexet ad: hétfő 1, vasárnap 7.",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "date",
+          "type": "dateExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "modulo",
+      "category": "math",
+      "kind": "expression",
+      "displayName": "Maradékképzés",
+      "description": "A maradékot adja vissza; negatív értéknél is nemnegatív ciklusindexet eredményez.",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "value",
+          "type": "decimalExpression",
+          "required": true
+        },
+        {
+          "name": "divisor",
+          "type": "decimalExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "durationHours",
+      "category": "dateTime",
+      "kind": "expression",
+      "displayName": "Időtartam órában",
+      "description": "Két időpont közötti időtartamot ad órában. Ha a záró időpont korábbi, éjfél utáni zárást feltételez.",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "start",
+          "type": "timeExpression",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "timeExpression",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "overlapHours",
+      "category": "dateTime",
+      "kind": "expression",
+      "displayName": "Időintervallum átfedése órában",
+      "description": "Kiszámolja két napi időintervallum átfedését, éjfélen átnyúló intervallumokat is kezelve.",
+      "resultType": "decimal",
+      "inputs": [
+        {
+          "name": "start",
+          "type": "timeExpression",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "timeExpression",
+          "required": true
+        },
+        {
+          "name": "windowStart",
+          "type": "timeExpression",
+          "required": true
+        },
+        {
+          "name": "windowEnd",
+          "type": "timeExpression",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

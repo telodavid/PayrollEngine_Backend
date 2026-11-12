@@ -1,0 +1,25 @@
+{
+  "schemaCode": "MUNAKRENDTESZT",
+  "name": "MUNAKRENDTESZT",
+  "version": 1,
+  "isActive": true,
+  "blocks": [
+    {
+      "name": "MPOTLEK",
+      "rules": [
+        {
+          "ruleCode": "MUSZAK",
+          "ruleName": "MUSZAK"
+        },
+        {
+          "ruleCode": "LEDOLGOZOTT_ORA",
+          "ruleName": "Ledolgozott \u00F3r\u00E1k"
+        },
+        {
+          "ruleCode": "12",
+          "ruleName": "12"
+        }
+      ]
+    }
+  ]
+}

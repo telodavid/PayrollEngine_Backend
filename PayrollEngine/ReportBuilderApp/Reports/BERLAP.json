@@ -1,0 +1,261 @@
+{
+  "reportCode": "BERLAP",
+  "name": "B\u00E9rlap",
+  "version": 1,
+  "isActive": true,
+  "layoutMode": "EMPLOYEE_DOCUMENT",
+  "dataSource": "PAYROLL_RESULT",
+  "dateFilter": {
+    "mode": "MONTH_RANGE",
+    "dateField": null,
+    "validFromField": null,
+    "validToField": null
+  },
+  "relations": [],
+  "xmlRootElementName": "Report",
+  "xmlRecordElementName": "Record",
+  "fileNamePattern": "riport_{period}",
+  "fields": [
+    {
+      "code": "employeeId",
+      "displayName": "Dolgoz\u00F3azonos\u00EDt\u00F3",
+      "outputName": "EmployeeId",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.EmployeeId",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    },
+    {
+      "code": "period",
+      "displayName": "Peri\u00F3dus",
+      "outputName": "Period",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.Period",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    },
+    {
+      "code": "element",
+      "displayName": "B\u00E9relemk\u00F3d",
+      "outputName": "PayrollElement",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollElement.Code",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    },
+    {
+      "code": "amount",
+      "displayName": "\u00D6sszeg",
+      "outputName": "Amount",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.PayrollResult.Amount",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    },
+    {
+      "code": "field1",
+      "displayName": "Banksz\u00E1mla \u00E9rv\u00E9nyess\u00E9g\u00E9nek kezdete",
+      "outputName": "Bank",
+      "value": {
+        "kind": "REFERENCE",
+        "reference": "dbo.EmployeeBankAccount.ValidFrom",
+        "constant": null
+      },
+      "aggregation": "NONE",
+      "format": null
+    }
+  ],
+  "grouping": {
+    "rowMode": "DETAIL",
+    "groupBy": [],
+    "splitFilesBy": [],
+    "sortBy": []
+  },
+  "parameters": [],
+  "filters": [
+    {
+      "field": "dbo.PayrollResult.ResultType",
+      "operator": "EQUALS",
+      "parameter": null,
+      "constant": "A"
+    }
+  ],
+  "output": null,
+  "employeeDocument": {
+    "mainSectionTitle": "F\u0151 adatr\u00E9sz",
+    "mainWorksheetName": "Adatok",
+    "header": {
+      "isEnabled": true,
+      "dataSource": "EMPLOYEE",
+      "dateFilter": {
+        "mode": "NONE",
+        "dateField": null,
+        "validFromField": null,
+        "validToField": null
+      },
+      "relations": [
+        {
+          "relationCode": "EMPLOYEE_BANK_ACCOUNTS",
+          "joinType": "LEFT",
+          "dateFilter": {
+            "mode": "AS_OF_DATE",
+            "dateField": null,
+            "validFromField": "dbo.EmployeeBankAccount.ValidFrom",
+            "validToField": "dbo.EmployeeBankAccount.ValidTo"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "code": "dba43c068b89434ea516638e1008d0f8",
+          "displayName": "Keresztn\u00E9v",
+          "outputName": "Field1",
+          "value": {
+            "kind": "REFERENCE",
+            "reference": "dbo.Employee.FirstName",
+            "constant": null
+          },
+          "aggregation": "NONE",
+          "format": null
+        },
+        {
+          "code": "c8bc1edf91174fbea6d7fc3ebd35c6d0",
+          "displayName": "Vezet\u00E9kn\u00E9v",
+          "outputName": "Field2",
+          "value": {
+            "kind": "REFERENCE",
+            "reference": "dbo.Employee.LastName",
+            "constant": null
+          },
+          "aggregation": "NONE",
+          "format": null
+        },
+        {
+          "code": "05108dad8e2b4b258779f5ed657fed99",
+          "displayName": "Banksz\u00E1mlasz\u00E1m",
+          "outputName": "Field3",
+          "value": {
+            "kind": "REFERENCE",
+            "reference": "dbo.EmployeeBankAccount.AccountIdentifier",
+            "constant": null
+          },
+          "aggregation": "NONE",
+          "format": null
+        },
+        {
+          "code": "771e9b25a48549eaa4aa8b11cb8daad0",
+          "displayName": "Kieg\u00E9sz\u00EDt\u0151 alap adatok / Lakhely t\u00E1vols\u00E1ga km.",
+          "outputName": "Field4",
+          "value": {
+            "kind": "REFERENCE",
+            "reference": "dbo.Employee.DynamicField.12",
+            "constant": null
+          },
+          "aggregation": "NONE",
+          "format": null
+        }
+      ],
+      "parameters": [],
+      "filters": []
+    },
+    "additionalSections": [
+      {
+        "code": "078c208a58d148eb804adcf1c270da67",
+        "title": "Adatr\u00E9sz 2",
+        "worksheetName": "Adatok 2",
+        "isEnabled": true,
+        "startNewPage": true,
+        "dataSource": "EMPLOYEE_ABSENCE",
+        "dateFilter": {
+          "mode": "DATE_RANGE",
+          "dateField": null,
+          "validFromField": "dbo.EmployeeAbsence.StartDate",
+          "validToField": "dbo.EmployeeAbsence.EndDate"
+        },
+        "relations": [],
+        "fields": [
+          {
+            "code": "ee69dc4b37164991997d8bcab74066b6",
+            "displayName": "AbsenceTypeId",
+            "outputName": "Field1",
+            "value": {
+              "kind": "REFERENCE",
+              "reference": "dbo.EmployeeAbsence.AbsenceTypeId",
+              "constant": null
+            },
+            "aggregation": "NONE",
+            "format": null
+          },
+          {
+            "code": "87076c52f9494ba2b3010c58258fe107",
+            "displayName": "StartDate",
+            "outputName": "Field2",
+            "value": {
+              "kind": "REFERENCE",
+              "reference": "dbo.EmployeeAbsence.StartDate",
+              "constant": null
+            },
+            "aggregation": "NONE",
+            "format": null
+          },
+          {
+            "code": "af84cbb9dc1f46a79be320c1b9bb0a6f",
+            "displayName": "EndDate",
+            "outputName": "Field3",
+            "value": {
+              "kind": "REFERENCE",
+              "reference": "dbo.EmployeeAbsence.EndDate",
+              "constant": null
+            },
+            "aggregation": "NONE",
+            "format": null
+          },
+          {
+            "code": "a42f866edfc94659bdf1afc37d6910ef",
+            "displayName": "StartTime",
+            "outputName": "Field4",
+            "value": {
+              "kind": "REFERENCE",
+              "reference": "dbo.EmployeeAbsence.StartTime",
+              "constant": null
+            },
+            "aggregation": "NONE",
+            "format": null
+          },
+          {
+            "code": "c860b6fc08de4521aa10d13e36ca988e",
+            "displayName": "EndTime",
+            "outputName": "Field5",
+            "value": {
+              "kind": "REFERENCE",
+              "reference": "dbo.EmployeeAbsence.EndTime",
+              "constant": null
+            },
+            "aggregation": "NONE",
+            "format": null
+          }
+        ],
+        "grouping": {
+          "rowMode": "DETAIL",
+          "groupBy": [],
+          "splitFilesBy": [],
+          "sortBy": []
+        },
+        "parameters": [],
+        "filters": []
+      }
+    ]
+  }
+}

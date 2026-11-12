@@ -1,0 +1,100 @@
+{
+  "ruleCode": "TB_JARULEK",
+  "name": "T\u00E1rsadalom biztos\u00EDt\u00E1si hozz\u00E1j\u00E1rul\u00E1s megk\u00E9pz\u00E9se",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "TbSzazal\u00E9k",
+        "value": {
+          "code": "constant",
+          "inputs": {
+            "valueType": "decimal",
+            "value": "0"
+          }
+        }
+      }
+    },
+    {
+      "code": "forEach",
+      "inputs": {
+        "items": {
+          "code": "dataReference",
+          "inputs": {
+            "reference": "payrollRun.constants"
+          }
+        },
+        "itemVariable": "AktualisKonstans",
+        "steps": [
+          {
+            "code": "if",
+            "inputs": {
+              "condition": {
+                "code": "equal",
+                "inputs": {
+                  "left": {
+                    "code": "dataReference",
+                    "inputs": {
+                      "reference": "dbo.Constant.ConstantId"
+                    }
+                  },
+                  "right": {
+                    "code": "constant",
+                    "inputs": {
+                      "valueType": "text",
+                      "value": "TBHSZ"
+                    }
+                  }
+                }
+              },
+              "thenSteps": [
+                {
+                  "code": "setVariable",
+                  "inputs": {
+                    "name": "TbSzazal\u00E9k",
+                    "value": {
+                      "code": "dataReference",
+                      "inputs": {
+                        "reference": "dbo.Constant.Value"
+                      }
+                    }
+                  }
+                }
+              ],
+              "elseSteps": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "5001-TBH",
+        "amount": {
+          "code": "multiply",
+          "inputs": {
+            "left": {
+              "code": "calculatedPayrollElementValue",
+              "inputs": {
+                "payrollElement": "4000-BRUTT\u00D3"
+              }
+            },
+            "right": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "TbSzazal\u00E9k"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

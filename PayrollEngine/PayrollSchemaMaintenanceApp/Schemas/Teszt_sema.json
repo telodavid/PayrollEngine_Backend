@@ -1,0 +1,38 @@
+{
+  "schemaCode": "Teszt_sema",
+  "name": "sema_kod",
+  "version": 1,
+  "isActive": false,
+  "blocks": [
+    {
+      "name": "Alapadatokbeolvas\u00E1sa",
+      "rules": [
+        {
+          "ruleCode": "IT_JOB_PREMIUM",
+          "ruleName": "IT munkak\u00F6ri pr\u00E9mium m\u00F3dos\u00EDtott"
+        },
+        {
+          "ruleCode": "MUSZAKPOTLEK",
+          "ruleName": "Muszakpotlek"
+        }
+      ]
+    },
+    {
+      "name": "valami",
+      "rules": [
+        {
+          "ruleCode": "IT_JOB_PREMIUM",
+          "ruleName": "IT munkak\u00F6ri pr\u00E9mium m\u00F3dos\u00EDtott"
+        },
+        {
+          "ruleCode": "IT_JOB_PREMIUM",
+          "ruleName": "IT munkak\u00F6ri pr\u00E9mium m\u00F3dos\u00EDtott"
+        }
+      ]
+    },
+    {
+      "name": "Blokk 3",
+      "rules": []
+    }
+  ]
+}

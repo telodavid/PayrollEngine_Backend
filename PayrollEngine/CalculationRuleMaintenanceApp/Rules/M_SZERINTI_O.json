@@ -1,0 +1,57 @@
+{
+  "ruleCode": "M_SZERINTI_O",
+  "name": "Munkarend szerinti \u00F3r\u00E1k",
+  "version": 1,
+  "isActive": true,
+  "ruleType": "normal",
+  "parameters": [],
+  "returnType": null,
+  "returnExpression": null,
+  "steps": [
+    {
+      "code": "setVariable",
+      "inputs": {
+        "name": "MrendSzerSzun",
+        "value": {
+          "code": "sum",
+          "inputs": {
+            "items": {
+              "code": "workCalendar",
+              "inputs": {}
+            },
+            "value": {
+              "code": "dataReference",
+              "inputs": {
+                "reference": "PAYROLL_RUN.WorkCalendar.BreakMinutes"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "code": "emitPayrollElement",
+      "inputs": {
+        "payrollElement": "2001-MRENDSZ",
+        "amount": {
+          "code": "divide",
+          "inputs": {
+            "left": {
+              "code": "variableReference",
+              "inputs": {
+                "name": "MrendSzerSzun"
+              }
+            },
+            "right": {
+              "code": "constant",
+              "inputs": {
+                "valueType": "decimal",
+                "value": 60
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
